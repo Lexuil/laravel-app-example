@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereUserId($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|Post filter()
  */
 class Post extends Model {
 
@@ -47,6 +48,13 @@ class Post extends Model {
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function scopeFilter($query, array $filters){
+        $query->when($filters['search'] ?? false, fn ($query, $search) =>
+            $query
+                ->where('title', 'like', '%' . $search . '%')
+                ->orWhere('body', 'like', '%' . $search . '%'));
     }
 
     public function category()
