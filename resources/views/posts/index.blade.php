@@ -15,6 +15,8 @@
                         />
                     @endforeach
                 </div>
+
+                {{ $posts->links() }}
             @endif
         @else
             <p class="text-center">No post yet. Please check back later.</p>
